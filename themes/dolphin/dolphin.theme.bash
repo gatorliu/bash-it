@@ -23,10 +23,10 @@ function prompt_command() {
     [ -z $VIRTUAL_ENV ] || PY_VENV="(`basename $VIRTUAL_ENV`) "
     
     local CURR_USER="\u"                
-    local INHOST="\[\033[22;38;5;87m\]\h"
 
     if [ -n "$DOLPHIN_THEME_FORCE_NO_COLORS" ]; then
         ## $MSYSTEM is set in MSYS2 environments(GIT-BASH), but not in WSL.
+        local INHOST="\h"
         if [ -n "$MSYSTEM" ]; then 
             INHOST="${MSYSTEM}(\h)"
         elif [ -z "$XDG_RUNTIME_DIR" ]; then  # must be here, because in Git-Bash, $SSH_CLIENT is not set, but in WSL, $SSH_CLIENT is set, and $XDG_RUNTIME_DIR is not set in both environments.
@@ -38,6 +38,7 @@ function prompt_command() {
          PS1="┌🐬 ${CURR_USER} @ ${INHOST}: \w 🐬\n" # echo -e "\U0001F42C"
         PS1+="└─> ${GIT_PS1}${PY_VENV}$ "
     else
+        local INHOST="\[\033[22;38;5;87m\]\h"
         ## $MSYSTEM is set in MSYS2 environments(GIT-BASH), but not in WSL.
         if [ -n "$MSYSTEM" ]; then 
             INHOST="\[\033[48;5;87m\]\[\033[22;38;5;208m\]${MSYSTEM}(\[\033[38;5;246m\]\h\[\033[22;38;5;208m\])\[\033[m\]"
