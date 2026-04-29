@@ -5,7 +5,7 @@
 
 echo
 echo "           🐬🐬 DOPHIN_THEME in use. 🐬🐬"
-echo "🐬 Set \`export DOLPHIN_THEME_FORCE_NO_COLORS=1\` to disable colors. 🐬"
+echo "🐬 Set 'DOLPHIN_THEME_FORCE_NO_COLORS=1' to disable colors. 🐬"
 echo 
 
 function prompt_command() {
