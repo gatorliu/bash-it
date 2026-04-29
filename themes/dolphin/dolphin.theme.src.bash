@@ -23,7 +23,7 @@ function prompt_command() {
     [ -z $VIRTUAL_ENV ] || PY_VENV="(`basename $VIRTUAL_ENV`) "
     
     local CURR_USER="\u"                
-    local INHOST="\[\033[22;38;5;87m\]\h"
+    local INHOST="${BLUE}\h"
 
     if [ -n "$DOLPHIN_THEME_FORCE_NO_COLORS" ]; then
         ## $MSYSTEM is set in MSYS2 environments(GIT-BASH), but not in WSL.
@@ -40,15 +40,15 @@ function prompt_command() {
     else
         ## $MSYSTEM is set in MSYS2 environments(GIT-BASH), but not in WSL.
         if [ -n "$MSYSTEM" ]; then 
-            INHOST="\[\033[48;5;87m\]\[\033[22;38;5;208m\]${MSYSTEM}(\[\033[38;5;246m\]\h\[\033[22;38;5;208m\])\[\033[m\]"
+            INHOST="${BLUE_B}${ORANGE}${MSYSTEM}(${GRAY}\h${ORANGE})${RESET}"
         elif [ -z "$XDG_RUNTIME_DIR" ]; then 
             local CURR_USER="(su -\u)"
         elif [ -z "$SSH_CLIENT" ]; then
-            INHOST="\[\033[48;5;87m\]\[\033[22;38;5;208m\]Local(\[\033[38;5;246m\]\h\[\033[22;38;5;208m\])\[\033[m\]"
+            INHOST="${BLUE_B}${ORANGE}Local(${GRAY}\h${ORANGE})${RESET}"
         fi
 
-         PS1="\[\033[22;38;5;87m\]┌🐬 \[\033[22;38;5;208m\]${CURR_USER}\[\033[1;37m\]@${INHOST}\[\033[1;37m\]:\[\033[22;38;5;227m\]\w \[\033[22;38;5;208m\]🐬\n" # echo -e "\U0001F42C"
-        PS1+="└─> \[\033[22;38;5;87m\]${GIT_PS1}\[\033[22;38;5;227m\]${PY_VENV}\[\033[m\]$ "
+         PS1="${BLUE}┌🐬 ${ORANGE}${CURR_USER}${WHITE}@${INHOST}${WHITE}:${YELLOW}\w ${ORANGE}🐬\n" # echo -e "\U0001F42C"
+        PS1+="└─> ${BLUE}${GIT_PS1}${YELLOW}${PY_VENV}${RESET}$ "
     fi
  
 }
