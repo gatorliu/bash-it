@@ -26,26 +26,27 @@ function prompt_command() {
 
     if [ -n "$DOLPHIN_THEME_FORCE_NO_COLORS" ]; then
         ## $MSYSTEM is set in MSYS2 environments(GIT-BASH), but not in WSL.
+        [[ "$USER" == "root" ]] && CURR_USER="**\u**"
+
         local INHOST="\h"
         if [ -n "$MSYSTEM" ]; then 
-            INHOST="${MSYSTEM}(\h)"
-        elif [ -z "$XDG_RUNTIME_DIR" ]; then  # must be here, because in Git-Bash, $SSH_CLIENT is not set, but in WSL, $SSH_CLIENT is set, and $XDG_RUNTIME_DIR is not set in both environments.
-            CURR_USER="(su -\u)"
-        elif [ -z "$SSH_CLIENT" ]; then
-            INHOST="Local(\h)"
+            INHOST=" ${MSYSTEM}(\h)"
+            INHOST=" GIT-BASH(\h)"
+        elif [ -n "$WSL_INTEROP" ]; then
+            INHOST="**WSL**(\h)"
         fi
 
          PS1="┌🐬 ${CURR_USER} @ ${INHOST}: \w 🐬\n" # echo -e "\U0001F42C"
         PS1+="└─> ${GIT_PS1}${PY_VENV}$ "
     else
+        [[ "$USER" == "root" ]] && CURR_USER="**\u**"
+
         local INHOST="\[\033[22;38;5;87m\]\h"
         ## $MSYSTEM is set in MSYS2 environments(GIT-BASH), but not in WSL.
         if [ -n "$MSYSTEM" ]; then 
-            INHOST="\[\033[48;5;87m\]\[\033[22;38;5;208m\]${MSYSTEM}(\[\033[38;5;246m\]\h\[\033[22;38;5;208m\])\[\033[m\]"
-        elif [ -z "$XDG_RUNTIME_DIR" ]; then 
-            local CURR_USER="(su -\u)"
-        elif [ -z "$SSH_CLIENT" ]; then
-            INHOST="\[\033[48;5;87m\]\[\033[22;38;5;208m\]Local(\[\033[38;5;246m\]\h\[\033[22;38;5;208m\])\[\033[m\]"
+            INHOST="\[\033[48;5;87m\]\[\033[38;5;0m\]GIT-BASH(\[\033[38;5;246m\]\h\[\033[38;5;0m\])\[\033[m\]"
+        elif [ -n "$WSL_INTEROP" ]; then
+            INHOST="\[\033[48;5;87m\]\[\033[38;5;0m\]WSL(\[\033[38;5;246m\]\h\[\033[38;5;0m\])\[\033[m\]"
         fi
 
          PS1="\[\033[22;38;5;87m\]┌🐬 \[\033[22;38;5;208m\]${CURR_USER}\[\033[1;37m\]@${INHOST}\[\033[1;37m\]:\[\033[22;38;5;227m\]\w \[\033[22;38;5;208m\]🐬\n" # echo -e "\U0001F42C"
